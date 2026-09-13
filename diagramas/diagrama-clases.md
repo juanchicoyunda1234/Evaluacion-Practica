@@ -41,6 +41,7 @@ classDiagram
         -Torre[] torres
         -int tope
         +insertarTorre(Torre) boolean
+        +existePosicion(int) boolean
         +eliminarTorrePorId(int) boolean
         +buscarTorrePorId(int) Torre
         +mostrarTodas()
@@ -72,11 +73,21 @@ classDiagram
         -ListaCircularOleadas oleadas
         -int vidasJugador
         -int turnoActual
-        +avanzarTurno()
+        -boolean partidaTerminada
+        -boolean partidaGanada
+        +registrarTorre(Torre) boolean
+        +eliminarTorre(int) boolean
+        +registrarOleada(Oleada) boolean
         +iniciarSiguienteOleada() boolean
+        +avanzarTurno()
+        +isPartidaTerminada() boolean
+    }
+    class Main {
+        +main(String[])
     }
     class TowerDefenseApp {
         +main(String[])
+        +ejecutar(Scanner)
     }
 
     ListaSecuencialTorres o-- Torre
@@ -90,4 +101,10 @@ classDiagram
     Juego o-- ListaDobleEnemigos
     Juego o-- ListaCircularOleadas
     TowerDefenseApp --> Juego
+    Main --> TowerDefenseApp
 ```
+
+> Este diagrama se enfoca en `modelo/` y `negocio/` (las tres estructuras de
+> datos exigidas por el enunciado). La relación entre `Main`, la consola y
+> la interfaz gráfica (`gui/`) se detalla en
+> [`diagrama-arquitectura.md`](diagrama-arquitectura.md).
