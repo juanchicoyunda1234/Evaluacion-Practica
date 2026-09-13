@@ -8,6 +8,11 @@ uso de tres estructuras de datos lineales **implementadas a mano**, sin
 `java.util`: lista secuencial (arreglo), lista doblemente enlazada y lista
 simplemente enlazada circular.
 
+Además del enunciado original (menú de consola), se agregó una **interfaz
+gráfica en Swing** por pedido del docente. Ambas interfaces (consola y GUI)
+comparten exactamente la misma lógica de `negocio/` y `modelo/` sin
+duplicarla — ver [Interfaz gráfica](#interfaz-gráfica-swing) más abajo.
+
 ### Enunciado
 
 CASO DE ESTUDIO: TOWER DEFENSE CON LISTAS SECUENCIALES, DOBLES Y CIRCULARES EN JAVA
@@ -116,8 +121,19 @@ El programa tiene estas clases:
   las vidas llegan a 0.
 - Vida inicial del jugador: 3. Longitud de la ruta: 20 posiciones (0 a
   20). El enunciado no pide puntuacion, asi que no se implemento.
-- Sin interfaz grafica: demo de consola con el menu de 10 opciones exacto
-  que pide el enunciado.
+- El menu de 10 opciones de consola se conserva en `TowerDefenseApp`.
+  La interfaz grafica Swing (`gui.TowerDefenseGUI`) cubre las mismas
+  10 opciones en 4 pestanas, sin tocar `modelo/` ni `negocio/`.
+- No se permiten dos torres en la misma posicion de la ruta
+  (`ListaSecuencialTorres.existePosicion`); tampoco se aceptan oleadas
+  con cantidad, vida base o velocidad base menores o iguales a 0 (una
+  velocidad 0 dejaria enemigos que nunca avanzan ni mueren, trabando la
+  partida). Ambas reglas se validan una sola vez en `Juego` y las usan
+  por igual la consola y la GUI.
+- `generarEnemigoDeOleada()` marca la oleada como terminada en el mismo
+  turno en que genera su ultimo enemigo, no en el turno siguiente; asi
+  `iniciarSiguienteOleada()` y la deteccion de victoria no se atrasan un
+  turno de mas.
 
 ### Conceptos aplicados
 
@@ -131,25 +147,61 @@ El programa tiene estas clases:
 
 ## Estructura del proyecto
 
-Arquitectura en 3 paquetes:
+Arquitectura en 4 paquetes:
 
 - `Java/src/modelo/`  -> `Torre`, `Enemigo`, `Oleada`, `NodoEnemigo`, `NodoOleada`
 - `Java/src/negocio/` -> `ListaSecuencialTorres`, `ListaDobleEnemigos`, `ListaCircularOleadas`, `Juego`
-- `Java/src/app/`     -> `TowerDefenseApp`, clase con el `main`
+- `Java/src/app/`     -> `Main` (punto de entrada, elige modo), `TowerDefenseApp` (menu de consola)
+- `Java/src/gui/`     -> interfaz Swing (`TowerDefenseGUI`, `MainFrame`, `JuegoControl`,
+  `EstiloGui`, `RutaVisual` y los 4 paneles); no modifica modelo ni negocio
+
+## Interfaz gráfica (Swing)
+
+Ventana única con una barra de estado (vidas, turno, resultado) y 4
+pestañas que cubren las mismas 10 opciones del menú de consola: 🏹
+Torres, 🌊 Oleadas, ⚔️ Batalla (incluye un mini mapa de la ruta 0→20) y
+📊 Estado general. El diseño completo, con wireframes y la explicación de
+cada pantalla, está en
+[`diagramas/diseno-gui.md`](diagramas/diseno-gui.md); cómo se conecta con
+`Juego` sin tocar `negocio/` se explica en
+[`diagramas/diagrama-arquitectura.md`](diagramas/diagrama-arquitectura.md).
+
+| Torres | Oleadas |
+|---|---|
+| ![Pestaña Torres](diagramas/gui-torres.png) | ![Pestaña Oleadas](diagramas/gui-oleadas.png) |
+
+| Batalla | Estado |
+|---|---|
+| ![Pestaña Batalla](diagramas/gui-batalla.png) | ![Pestaña Estado](diagramas/gui-estado.png) |
 
 ## Diagramas
 
-- Diagrama de clases: `diagramas/diagrama-clases.md` (fuente Mermaid) y `diagramas/diagrama-clases.png` (render)
-- Captura de ejecucion: `diagramas/captura-ejecucion.png`
+- Diagrama de clases (`modelo/` y `negocio/`): [`diagramas/diagrama-clases.md`](diagramas/diagrama-clases.md) (Mermaid) y `diagramas/diagrama-clases.png` (render)
+- Diagrama de arquitectura (paquetes `app`/`gui`/`negocio`/`modelo`): [`diagramas/diagrama-arquitectura.md`](diagramas/diagrama-arquitectura.md)
+- Diagrama de secuencia de un turno + diagrama de estados de la partida: [`diagramas/diagrama-turno-y-estados.md`](diagramas/diagrama-turno-y-estados.md)
+- Diseño de la interfaz gráfica (wireframes y decisiones de UI): [`diagramas/diseno-gui.md`](diagramas/diseno-gui.md)
+- Capturas de la GUI: `diagramas/gui-torres.png`, `gui-oleadas.png`, `gui-batalla.png`, `gui-estado.png`
 
 ## Como ejecutar
 
-Desde `Java/src`:
+Desde `Java/src`, compilando todo junto (consola y GUI comparten la
+misma salida):
 
 ```bash
-javac modelo/*.java negocio/*.java app/*.java -d ../out
-cd ../out
-java app.TowerDefenseApp
+javac -encoding UTF-8 -d ../out modelo/*.java negocio/*.java app/*.java gui/*.java
+```
+
+**Punto de entrada unico (recomendado):** pregunta el modo al arrancar.
+
+```bash
+java -cp ../out app.Main
+```
+
+**Directo a un modo especifico**, si prefieres saltarte la pregunta:
+
+```bash
+java -cp ../out app.TowerDefenseApp   # consola
+java -cp ../out gui.TowerDefenseGUI   # interfaz grafica
 ```
 
 ## Equipo
