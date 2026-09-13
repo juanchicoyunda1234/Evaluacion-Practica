@@ -10,6 +10,11 @@ public class TowerDefenseApp {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        ejecutar(sc);
+        sc.close();
+    }
+
+    static void ejecutar(Scanner sc) {
         Juego juego = new Juego(3);
         int contadorIdTorre = 1;
         int contadorIdOleada = 1;
@@ -68,8 +73,6 @@ public class TowerDefenseApp {
                     System.out.println("Opcion invalida.");
             }
         }
-
-        sc.close();
     }
 
     private static int registrarTorre(Scanner sc, Juego juego, int contadorId) {
@@ -94,7 +97,8 @@ public class TowerDefenseApp {
             return contadorId + 1;
         }
 
-        System.out.println("No se pudo registrar la torre, capacidad maxima alcanzada.");
+        System.out.println("No se pudo registrar la torre. Revisa: posicion entre 0 y 20, danio mayor a 0, "
+                + "rango y costo no negativos, sin otra torre en esa posicion, y capacidad maxima no alcanzada.");
         return contadorId;
     }
 
@@ -116,12 +120,18 @@ public class TowerDefenseApp {
         int velocidadBase = leerEntero(sc);
 
         Oleada oleada = new Oleada(contadorId, cantidad, tipo, vidaBase, velocidadBase);
-        juego.registrarOleada(oleada);
-        System.out.println("Oleada registrada con id " + contadorId);
-        return contadorId + 1;
+        boolean registrada = juego.registrarOleada(oleada);
+
+        if (registrada) {
+            System.out.println("Oleada registrada con id " + contadorId);
+            return contadorId + 1;
+        }
+
+        System.out.println("No se pudo registrar la oleada: cantidad, vida base y velocidad base deben ser mayores a 0.");
+        return contadorId;
     }
 
-    private static int leerEntero(Scanner sc) {
+    static int leerEntero(Scanner sc) {
         while (!sc.hasNextInt()) {
             System.out.print("Ingresa un numero valido: ");
             sc.next();
