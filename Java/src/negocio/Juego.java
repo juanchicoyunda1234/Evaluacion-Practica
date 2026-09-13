@@ -38,7 +38,18 @@ public class Juego {
     }
 
     public boolean registrarTorre(Torre torre) {
+        if (!torreValida(torre)) {
+            return false;
+        }
         return torres.insertarTorre(torre);
+    }
+
+    private boolean torreValida(Torre torre) {
+        return torre.getPosicion() >= 0
+                && torre.getPosicion() <= LONGITUD_RUTA
+                && torre.getDanio() > 0
+                && torre.getRango() >= 0
+                && torre.getCosto() >= 0;
     }
 
     public boolean eliminarTorre(int id) {
@@ -49,8 +60,18 @@ public class Juego {
         torres.mostrarTodas();
     }
 
-    public void registrarOleada(Oleada oleada) {
+    public boolean registrarOleada(Oleada oleada) {
+        if (!oleadaValida(oleada)) {
+            return false;
+        }
         oleadas.registrarOleada(oleada);
+        return true;
+    }
+
+    private boolean oleadaValida(Oleada oleada) {
+        return oleada.getCantidadEnemigos() > 0
+                && oleada.getVidaBase() > 0
+                && oleada.getVelocidadBase() > 0;
     }
 
     public void mostrarOleadas() {
@@ -118,6 +139,10 @@ public class Juego {
         contadorIdEnemigo++;
         enemigosActivos.insertarFinal(nuevo);
         enemigosPorGenerar--;
+
+        if (enemigosPorGenerar <= 0) {
+            oleadaEnCurso = false;
+        }
     }
 
     private void aplicarAtaquesDeTorres() {
