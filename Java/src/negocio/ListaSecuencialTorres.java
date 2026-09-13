@@ -17,9 +17,21 @@ public class ListaSecuencialTorres {
         if (tope >= MAX_TORRES) {
             return false;
         }
+        if (existePosicion(torre.getPosicion())) {
+            return false;
+        }
         torres[tope] = torre;
         tope++;
         return true;
+    }
+
+    public boolean existePosicion(int posicion) {
+        for (int i = 0; i < tope; i++) {
+            if (torres[i].getPosicion() == posicion) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean eliminarTorrePorId(int id) {
