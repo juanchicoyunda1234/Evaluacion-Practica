@@ -170,8 +170,16 @@ diseño completo está en
 `Juego` sin tocar `negocio/` se explica en
 [`diagramas/diagrama-arquitectura.md`](diagramas/diagrama-arquitectura.md).
 
-Capturas reales de una partida completa (consola y GUI, victoria y
-derrota) están en [`ejecucion/`](ejecucion/).
+| Tablero inicial | Torre registrada |
+|---|---|
+| ![Tablero inicial](ejecucion/interfaz-grafica/01-dashboard-inicial.png) | ![Torre en el mapa](ejecucion/interfaz-grafica/03-torre-en-el-mapa.png) |
+
+| Victoria | Derrota |
+|---|---|
+| ![Victoria](ejecucion/interfaz-grafica/05-victoria.png) | ![Derrota](ejecucion/interfaz-grafica/07-derrota.png) |
+
+Más capturas (diálogos, estado general, reinicio) y la ejecución en
+consola están en [`ejecucion/`](ejecucion/).
 
 ## Diagramas
 
