@@ -69,7 +69,8 @@ public class Juego {
     }
 
     private boolean oleadaValida(Oleada oleada) {
-        return oleada.getCantidadEnemigos() > 0
+        return oleada.getTipoEnemigo() != null && !oleada.getTipoEnemigo().trim().isEmpty()
+                && oleada.getCantidadEnemigos() > 0
                 && oleada.getVidaBase() > 0
                 && oleada.getVelocidadBase() > 0;
     }
