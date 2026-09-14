@@ -14,8 +14,8 @@ flowchart TB
     end
 
     subgraph interfaz["gui"]
-        GUIMain["TowerDefenseGUI + MainFrame<br/>(ventana Swing)"]
-        Paneles["TorresPanel / OleadasPanel /<br/>BatallaPanel / EstadoPanel"]
+        GUIMain["TowerDefenseGUI + MainFrame<br/>(ventana unica tipo tablero)"]
+        Paneles["DatosPanel / EstadoPanel<br/>DialogoTorre / DialogoOleada<br/>PantallaFinPartida"]
         Control["JuegoControl<br/>(adaptador GUI to Juego)"]
         Estilo["EstiloGui / RutaVisual<br/>(look and feel, dibujo)"]
     end
