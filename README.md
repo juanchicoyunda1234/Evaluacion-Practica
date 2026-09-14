@@ -123,7 +123,8 @@ El programa tiene estas clases:
   20). El enunciado no pide puntuacion, asi que no se implemento.
 - El menu de 10 opciones de consola se conserva en `TowerDefenseApp`.
   La interfaz grafica Swing (`gui.TowerDefenseGUI`) cubre las mismas
-  10 opciones en 4 pestanas, sin tocar `modelo/` ni `negocio/`.
+  10 opciones en una sola pantalla tipo tablero (campo de batalla,
+  datos y botones siempre visibles), sin tocar `modelo/` ni `negocio/`.
 - No se permiten dos torres en la misma posicion de la ruta
   (`ListaSecuencialTorres.existePosicion`); tampoco se aceptan oleadas
   con cantidad, vida base o velocidad base menores o iguales a 0 (una
@@ -153,26 +154,24 @@ Arquitectura en 4 paquetes:
 - `Java/src/negocio/` -> `ListaSecuencialTorres`, `ListaDobleEnemigos`, `ListaCircularOleadas`, `Juego`
 - `Java/src/app/`     -> `Main` (punto de entrada, elige modo), `TowerDefenseApp` (menu de consola)
 - `Java/src/gui/`     -> interfaz Swing (`TowerDefenseGUI`, `MainFrame`, `JuegoControl`,
-  `EstiloGui`, `RutaVisual` y los 4 paneles); no modifica modelo ni negocio
+  `EstiloGui`, `RutaVisual`, `DatosPanel`, `DialogoTorre`, `DialogoOleada`,
+  `PantallaFinPartida`, `EstadoPanel`); no modifica modelo ni negocio
 
 ## Interfaz gráfica (Swing)
 
-Ventana única con una barra de estado (vidas, turno, resultado) y 4
-pestañas que cubren las mismas 10 opciones del menú de consola: 🏹
-Torres, 🌊 Oleadas, ⚔️ Batalla (incluye un mini mapa de la ruta 0→20) y
-📊 Estado general. El diseño completo, con wireframes y la explicación de
-cada pantalla, está en
+Ventana única tipo tablero: barra de estado (vidas, torres, oleada,
+turno), campo de batalla con mini mapa de la ruta 0→20 (torres como
+pines con su número y nombre, enemigos como puntos), panel de datos con
+pestañas Torre/Enemigo/Oleada, y todos los botones de acción siempre
+visibles — sin pestañas que escondan el resto del juego. Al ganar o
+perder aparece un overlay de pantalla completa con el resultado. El
+diseño completo está en
 [`diagramas/diseno-gui.md`](diagramas/diseno-gui.md); cómo se conecta con
 `Juego` sin tocar `negocio/` se explica en
 [`diagramas/diagrama-arquitectura.md`](diagramas/diagrama-arquitectura.md).
 
-| Torres | Oleadas |
-|---|---|
-| ![Pestaña Torres](diagramas/gui-torres.png) | ![Pestaña Oleadas](diagramas/gui-oleadas.png) |
-
-| Batalla | Estado |
-|---|---|
-| ![Pestaña Batalla](diagramas/gui-batalla.png) | ![Pestaña Estado](diagramas/gui-estado.png) |
+Capturas reales de una partida completa (consola y GUI, victoria y
+derrota) están en [`ejecucion/`](ejecucion/).
 
 ## Diagramas
 
@@ -180,7 +179,7 @@ cada pantalla, está en
 - Diagrama de arquitectura (paquetes `app`/`gui`/`negocio`/`modelo`): [`diagramas/diagrama-arquitectura.md`](diagramas/diagrama-arquitectura.md)
 - Diagrama de secuencia de un turno + diagrama de estados de la partida: [`diagramas/diagrama-turno-y-estados.md`](diagramas/diagrama-turno-y-estados.md)
 - Diseño de la interfaz gráfica (wireframes y decisiones de UI): [`diagramas/diseno-gui.md`](diagramas/diseno-gui.md)
-- Capturas de la GUI: `diagramas/gui-torres.png`, `gui-oleadas.png`, `gui-batalla.png`, `gui-estado.png`
+- Capturas de ejecución (consola y GUI, victoria y derrota): [`ejecucion/`](ejecucion/)
 
 ## Como ejecutar
 
