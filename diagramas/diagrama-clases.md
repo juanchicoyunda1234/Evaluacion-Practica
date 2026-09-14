@@ -82,9 +82,6 @@ classDiagram
         +avanzarTurno()
         +isPartidaTerminada() boolean
     }
-    class Main {
-        +main(String[])
-    }
     class TowerDefenseApp {
         +main(String[])
         +ejecutar(Scanner)
@@ -101,10 +98,9 @@ classDiagram
     Juego o-- ListaDobleEnemigos
     Juego o-- ListaCircularOleadas
     TowerDefenseApp --> Juego
-    Main --> TowerDefenseApp
 ```
 
 > Este diagrama se enfoca en `modelo/` y `negocio/` (las tres estructuras de
-> datos exigidas por el enunciado). La relación entre `Main`, la consola y
+> datos exigidas por el enunciado). La relación entre la consola y
 > la interfaz gráfica (`gui/`) se detalla en
 > [`diagrama-arquitectura.md`](diagrama-arquitectura.md).
