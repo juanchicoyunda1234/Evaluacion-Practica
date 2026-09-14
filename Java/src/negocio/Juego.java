@@ -45,7 +45,9 @@ public class Juego {
     }
 
     private boolean torreValida(Torre torre) {
-        return torre.getPosicion() >= 0
+        return torre.getNombre() != null && !torre.getNombre().trim().isEmpty()
+                && torre.getTipo() != null && !torre.getTipo().trim().isEmpty()
+                && torre.getPosicion() >= 0
                 && torre.getPosicion() <= LONGITUD_RUTA
                 && torre.getDanio() > 0
                 && torre.getRango() >= 0
