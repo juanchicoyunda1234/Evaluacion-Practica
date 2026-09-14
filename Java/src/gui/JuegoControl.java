@@ -27,7 +27,7 @@ public class JuegoControl {
     private static final Pattern ENEMIGO = Pattern.compile(
             "Enemigo #(\\d+) \\[(.+)\\] pos=(-?\\d+) vida=(-?\\d+) vel=(-?\\d+) recompensa=(-?\\d+)");
 
-    private final Juego juego;
+    private Juego juego;
     private final List<Torre> torres = new ArrayList<Torre>();
     private final List<Oleada> oleadas = new ArrayList<Oleada>();
     private final StringBuilder registro = new StringBuilder();
@@ -183,6 +183,16 @@ public class JuegoControl {
             System.err.println("avanzarTurno: " + ex);
             return Resultado.error("No se pudo avanzar el turno.");
         }
+    }
+
+    public synchronized void reiniciar() {
+        juego = new Juego(VIDAS_INICIALES);
+        torres.clear();
+        oleadas.clear();
+        registro.setLength(0);
+        siguienteIdTorre = 1;
+        siguienteIdOleada = 1;
+        actualizarEstado();
     }
 
     public synchronized List<Torre> listarTorres() {
