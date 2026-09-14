@@ -45,6 +45,8 @@ que escondan partes del juego:
 Refresco automático: después de cualquier acción (agregar torre, avanzar
 turno, etc.) se refresca todo el tablero de una vez (`MainFrame.refrescarTodo()`).
 
+![Tablero inicial](../ejecucion/interfaz-grafica/01-dashboard-inicial.png)
+
 ## Campo de batalla (`RutaVisual`)
 
 Mini mapa siempre visible de la ruta 0→20. Cada torre se dibuja como un
@@ -65,6 +67,8 @@ Registrar torre u oleada abre una ventana emergente (`JDialog`) con el
 formulario correspondiente y validación en línea (igual que antes, pero
 ya no ocupa espacio permanente en la pantalla principal).
 
+![Diálogo registrar torre](../ejecucion/interfaz-grafica/02-dialogo-registrar-torre.png)
+
 ## Fin de partida (`PantallaFinPartida`)
 
 Al ganar o perder aparece automáticamente un overlay de pantalla completa
@@ -73,12 +77,18 @@ el mensaje "🏆 ¡VICTORIA!" o "💀 DERROTA" en grande, más el detalle del
 motivo. Se cierra con un clic. Antes esto solo se veía si el jugador
 abría manualmente "Estado general".
 
+| Victoria | Derrota |
+|---|---|
+| ![Victoria](../ejecucion/interfaz-grafica/05-victoria.png) | ![Derrota](../ejecucion/interfaz-grafica/07-derrota.png) |
+
 ## Estado general (`EstadoPanel`)
 
 Se mantiene igual que en la versión anterior (tarjetas con turno, vidas,
 torres, enemigos, oleadas, estado de la partida), pero ahora vive dentro
 de un diálogo emergente en vez de una pestaña fija, para no ocupar
 espacio permanente en el tablero principal.
+
+![Estado general](../ejecucion/interfaz-grafica/06-estado-general.png)
 
 ## Botonera inferior
 
