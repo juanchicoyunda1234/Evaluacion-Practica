@@ -48,7 +48,7 @@ public class Juego {
         return torre.getPosicion() >= 0
                 && torre.getPosicion() <= LONGITUD_RUTA
                 && torre.getDanio() > 0
-                && torre.getRango() >= 0
+                && torre.getRango() > 0
                 && torre.getCosto() >= 0;
     }
 
