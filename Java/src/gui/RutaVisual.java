@@ -32,7 +32,7 @@ public class RutaVisual extends JPanel {
     private static final Color TEXTO = new Color(51, 65, 85);
 
     private final int[] enemigosPorCelda = new int[CELDAS];
-    private final int[] torresPorCelda = new int[CELDAS];
+    private final Torre[] torrePorCelda = new Torre[CELDAS];
 
     public RutaVisual() {
         setOpaque(false);
@@ -44,7 +44,7 @@ public class RutaVisual extends JPanel {
     public void actualizar(List<FilaEnemigo> enemigos, List<Torre> torres) {
         for (int i = 0; i < CELDAS; i++) {
             enemigosPorCelda[i] = 0;
-            torresPorCelda[i] = 0;
+            torrePorCelda[i] = null;
         }
         if (enemigos != null) {
             for (int i = 0; i < enemigos.size(); i++) {
@@ -54,8 +54,8 @@ public class RutaVisual extends JPanel {
         }
         if (torres != null) {
             for (int i = 0; i < torres.size(); i++) {
-                int p = clamp(torres.get(i).getPosicion());
-                torresPorCelda[p]++;
+                Torre t = torres.get(i);
+                torrePorCelda[clamp(t.getPosicion())] = t;
             }
         }
         repaint();
@@ -115,17 +115,8 @@ public class RutaVisual extends JPanel {
                 g2.drawString(n, x - fm.stringWidth(n) / 2, h - 8);
             }
 
-            if (torresPorCelda[i] > 0) {
-                int tw = 10;
-                int[] xs = { x, x - tw / 2, x + tw / 2 };
-                int[] ys = { yVia - 22, yVia - 10, yVia - 10 };
-                g2.setColor(TORRE);
-                g2.fillPolygon(xs, ys, 3);
-                if (torresPorCelda[i] > 1) {
-                    g2.setColor(Color.WHITE);
-                    String c = String.valueOf(torresPorCelda[i]);
-                    g2.drawString(c, x - fm.stringWidth(c) / 2, yVia - 12);
-                }
+            if (torrePorCelda[i] != null) {
+                dibujarPinTorre(g2, torrePorCelda[i], x, yVia, h);
             }
 
             if (enemigosPorCelda[i] > 0) {
@@ -148,5 +139,54 @@ public class RutaVisual extends JPanel {
         g2.drawString(base, w - margenX - g2.getFontMetrics().stringWidth(base) + 4, 16);
 
         g2.dispose();
+    }
+
+    /**
+     * Marcador tipo "pin de mapa": circulo con el id de la torre y su
+     * nombre debajo, en vez de un simple triangulo.
+     */
+    private void dibujarPinTorre(Graphics2D g2, Torre torre, int x, int yVia, int alto) {
+        int radio = 11;
+        int alturaPunta = 9;
+        int centroY = yVia - alturaPunta - radio;
+
+        int anchoPunta = 8;
+        int[] xsPunta = { x - anchoPunta / 2, x + anchoPunta / 2, x };
+        int[] ysPunta = { centroY + radio - 3, centroY + radio - 3, yVia };
+
+        g2.setColor(TORRE);
+        g2.fillPolygon(xsPunta, ysPunta, 3);
+        g2.fillOval(x - radio, centroY - radio, radio * 2, radio * 2);
+        g2.setColor(TORRE.darker());
+        g2.drawOval(x - radio, centroY - radio, radio * 2, radio * 2);
+
+        Font fuenteNumero = EstiloGui.FUENTE_PEQUENA.deriveFont(Font.BOLD);
+        g2.setFont(fuenteNumero);
+        FontMetrics fmNumero = g2.getFontMetrics();
+        String id = String.valueOf(torre.getId());
+        g2.setColor(Color.WHITE);
+        g2.drawString(id, x - fmNumero.stringWidth(id) / 2, centroY + fmNumero.getAscent() / 2 - 1);
+
+        String nombre = torre.getNombre();
+        if (nombre != null && !nombre.isEmpty()) {
+            g2.setFont(EstiloGui.FUENTE_PEQUENA);
+            FontMetrics fmNombre = g2.getFontMetrics();
+            int anchoMax = 64;
+            String etiqueta = recortar(nombre, fmNombre, anchoMax);
+            int yEtiqueta = Math.min(yVia + 16, alto - 20);
+            g2.setColor(TEXTO);
+            g2.drawString(etiqueta, x - fmNombre.stringWidth(etiqueta) / 2, yEtiqueta);
+        }
+    }
+
+    private String recortar(String texto, FontMetrics fm, int anchoMax) {
+        if (fm.stringWidth(texto) <= anchoMax) {
+            return texto;
+        }
+        String recortado = texto;
+        while (recortado.length() > 1 && fm.stringWidth(recortado + "…") > anchoMax) {
+            recortado = recortado.substring(0, recortado.length() - 1);
+        }
+        return recortado + "…";
     }
 }
